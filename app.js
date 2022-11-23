@@ -20,6 +20,32 @@ function requestHandler(request, response) {
             });
             break;
 
+        case '/slot':
+            fs.readFile('slot_machine.html', function (error, data) {
+                if (error) {
+                    response.writeHead(404);
+                }
+                else {
+                    response.writeHead(200, { "content-Type": "text/html" });
+                    response.write(data, "utf8");
+                }
+                response.end();
+            });
+            break;
+
+        case '/battaglia':
+            fs.readFile('battaglia_navale.html', function (error, data) {
+                if (error) {
+                    response.writeHead(404);
+                }
+                else {
+                    response.writeHead(200, { "content-Type": "text/html" });
+                    response.write(data, "utf8");
+                }
+                response.end();
+            });
+            break;
+
         case '/css':
             fs.readFile('css/style.css', function (error, data) {
                 if (error) {
