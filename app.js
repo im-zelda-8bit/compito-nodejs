@@ -57,6 +57,19 @@ function requestHandler(request, response) {
                 }
                 response.end();
             });
+            break; 
+        
+        case '/pisa':
+            fs.readFile('img/pisa.jpg', function (error, data) {
+                if (error) {
+                    response.writeHead(404);
+                }
+                else {
+                    response.writeHead(200, { "content-Type": "img/jpg" });
+                    response.write(data, "utf8");
+                }
+                response.end();
+            });
             break;  
     }
 }
