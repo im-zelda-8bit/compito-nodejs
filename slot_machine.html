@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Slot Machine</title>
     <link rel="stylesheet" href="css">
+    <link rel="stylesheet" href="slotcss">
+    <script src="slotjs"></script>
 </head>
 <body>
     <ul>
@@ -13,5 +15,14 @@
         <li><a class="active"  href="/slot">Slot Machine</a></li>
         <li><a href="/battaglia">Battaglia Navale</a></li>
     </ul>
+    <div id="container"">
+        <div id="slot1" class="slot">😴</div>
+        <div id="slot2" class="slot">🤗</div>
+        <div id="slot3" class="slot">😁</div>
+        <br><button onclick="spin()" id="button">Spin</button>
+        <h2 id="risultato"></h2>
+    </div>
+    
+    
 </body>
 </html>

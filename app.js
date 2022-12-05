@@ -57,7 +57,20 @@ function requestHandler(request, response) {
                 }
                 response.end();
             });
-            break; 
+            break;
+        
+        case '/slotcss':
+            fs.readFile('css/slot_style.css', function (error, data) {
+                if (error) {
+                    response.writeHead(404);
+                }
+                else {
+                    response.writeHead(200, { "content-Type": "text/css" });
+                    response.write(data, "utf8");
+                }
+                response.end();
+            });
+            break;
         
         case '/pisa':
             fs.readFile('img/pisa.jpg', function (error, data) {
@@ -70,7 +83,20 @@ function requestHandler(request, response) {
                 }
                 response.end();
             });
-            break;  
+            break;
+        
+        case '/slotjs':
+            fs.readFile('slot_machine.js', function (error, data) {
+                if (error) {
+                    response.writeHead(404);
+                }
+                else {
+                    response.writeHead(200, { "content-Type": "text/javascript" });
+                    response.write(data, "utf8");
+                }
+                response.end();
+            });
+            break;   
     }
 }
 
