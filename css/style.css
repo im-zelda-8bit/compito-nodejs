@@ -27,17 +27,23 @@ li a:hover:not(.active) {
 }
   
 .active {
-  background-color: #04AA6D;
-}
-#pisa {
-  margin-top: 20px;
-}
-
-#imgpisa {
-  float: left;
+  background-color: rgb(0, 0, 136);
 }
 
 #presentazione {
   margin-left: 20px;
-  float: left;
+  margin-top: 20px;
+}
+
+h2, h3, li {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#titolo {
+  text-align: center;
+}
+
+.tutorial {
+  margin-top: 100px;
+  text-align: center;
 }
