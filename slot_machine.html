@@ -7,7 +7,8 @@
     <title>Slot Machine</title>
     <link rel="stylesheet" href="css">
     <link rel="stylesheet" href="slotcss">
-    <script src="slotjs"></script>
+    
+    <script src="/socket.io/socket.io.js"></script> <!--include socket.io client side -->
 </head>
 <body>
     <ul>
@@ -22,7 +23,102 @@
         <br><button onclick="spin()" id="button">Spin</button>
         <h2 id="risultato"></h2>
     </div>
-    
-    
+    <label for="nome">Nickname: </label>
+    <input type="text" id="nome" name="nome" value=""><br>
+    <p id="giocatori"></p>
+    <script>
+        let arraySimboli = [
+            '💎',
+            '🤑',
+            '🍒',
+            '😎',
+            '🍇',
+            '🐟'
+        ];
+        let utenti = [];
+
+            //carica socket.io nel client e connettiti al server
+        let err = "";
+        console.log('inizio');
+
+        const utente = {
+            nome: "",
+            punti: 0,
+            inserito: false
+        };
+
+        async function spin() {
+            document.getElementById("risultato").innerHTML = "";
+            let slot1 = getRandomInt(5);
+            let slot2 = getRandomInt(5);
+            let slot3 = getRandomInt(5);
+
+            await gestisci();
+            await scorri("slot1", slot1);
+            await scorri("slot2", slot2);
+            await scorri("slot3", slot3);
+
+            await vittoria();
+        }
+
+        async function scorri(slot, num) {
+            for (let i = 0; i < arraySimboli.length; i++) {
+                document.getElementById(slot).innerHTML = arraySimboli[i];
+                await sleep(250);
+            }
+            document.getElementById(slot).innerHTML = arraySimboli[num];
+        }
+
+        function vittoria() {
+            let slot1 = document.getElementById("slot1").innerHTML;
+            let slot2 = document.getElementById("slot2").innerHTML;
+            let slot3 = document.getElementById("slot3").innerHTML;
+
+            if (slot1 == slot2 && slot2 == slot3)
+                document.getElementById("risultato").innerHTML = "Hai vinto!";
+            else
+                document.getElementById("risultato").innerHTML = "Hai perso!";
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function getRandomInt(max) {
+            return Math.floor(Math.random() * max);
+        }
+
+        const socket = io.connect('http://127.0.0.1:3000/');
+        function gestisci() {
+            const utente = new Object();
+            utente[nome] = document.getElementById("nome").value;
+            socket.emit("messaggio", utente[nome]);
+            document.getElementById("giocatori").innerHTML += utente[nome] + "<br>";
+        }
+
+
+
+        socket.on("connesso", function (data) { //get button status from server
+            //console.log('dati del server',data);
+            //document.getElementById("giocatori").innerHTML += data + "\n";
+            console.log('ascolta connessione');
+        });
+        socket.on("messaggio", function (data) { //get button status from server
+            console.log('dati del server',data);
+            document.getElementById("giocatori").innerHTML += data + "<br>";
+            console.log('ascolta messaggio');
+        });
+        socket.on("stato", function (data) {
+            console.log('clienti connessi:', data);
+            document.getElementById("cname").value = data;
+        });
+        function endChat() {
+            socket.disconnect(socket);
+            document.getElementById("cname").value = "";
+            document.getElementById("tname").value = "";
+            document.getElementById("fname").value = "";
+            document.getElementById("Nickname").value = "";
+        }
+    </script>
 </body>
 </html>
