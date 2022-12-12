@@ -1,6 +1,11 @@
 const http = require("http");
 const fs = require("fs");
 const url = require("url");
+const utenti = [];
+const port = 3000;
+const ip = "127.0.0.1";
+let numUtenti = 0;
+
 
 function requestHandler(request, response) {
 
@@ -317,9 +322,66 @@ function requestHandler(request, response) {
                 }
                 response.end();
             });
+            break;
+            
+        case '/socket':
+            fs.readFile('/socket.io/client-dist/sosckt.io.js', function (error, data) {
+                if (error) {
+                    response.writeHead(404);
+                }
+                else {
+                    response.writeHead(200, { "content-Type": "text/javascript" });
+                    response.write(data, "utf8");
+                }
+                response.end();
+            });
             break; 
+
+            
     }
 }
 
 const server = http.createServer(requestHandler);
-server.listen(3000);
+
+server.listen(port, ip, function () {
+    console.log("Server started on " + ip + ":" + port);
+});
+
+const io = require("socket.io")(server, {   // socket.io module and pass the http object(server)
+    cors: {									//  socket.io 4.5.3
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST"]
+    }
+});
+
+io.sockets.on('connection', function (socket) { // WebSocket Connection 
+    //(è arrivata una richiesta di connessione dal client)
+    socket.username = socket.id; //memorizzo nella variabile di sessione username l'id del socket
+    utenti.push(socket.id);		//nel vettore users memorizzo  gli id dei socket connessi
+    console.log('cliente: connesso ' + socket.id);
+    //L’istruzione socket.emit permette di inviare al client
+    // il messaggio che contiene ip e porta del server
+    socket.emit('connesso', ip + " " + "porta:" + " " + port);
+
+    //funzione che gestisce i dati che arrivano da un client  
+    socket.on('messaggio', function (data) {
+        console.log("client: " + data);
+        //invio a tutti i client connessi il messaggio che è arrivato da un client
+        socket.broadcast.emit('messaggio', data);
+        console.log(numUtenti);
+    });
+    // funzione che gestisce la disconnessione del client
+    socket.on('disconnect', function () {
+        numClienti--;	//aggiorno il numero dei client connessi
+        console.log('Clienti connessi:', numClienti);
+        socket.broadcast.emit('stato', numClienti);//informo i client sul numero dei connessi
+        console.log('utente: disconnesso ' + socket.username);
+        for (var i = 0; i < users.length; i++) { //tolgo dal vettore users il socket.id che si disconnette
+            if (users[i] == socket.username) {
+                users.splice(i, 1);
+            }
+        }
+        delete socket;
+    });
+    
+});
