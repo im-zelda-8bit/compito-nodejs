@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/im-zelda-8bit/compito-nodejs/issues"
   },
-  "homepage": "https://github.com/im-zelda-8bit/compito-nodejs#readme"
+  "homepage": "https://github.com/im-zelda-8bit/compito-nodejs#readme",
+  "dependencies": {
+    "socket.io": "^4.5.4"
+  }
 }
