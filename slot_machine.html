@@ -23,10 +23,11 @@
         <br><button onclick="spin()" id="button">Spin</button>
         <h2 id="risultato"></h2>
     </div>
-    <label for="nome">Nickname: </label>
+    <label for="nome">Nome: </label>
     <input type="text" id="nome" name="nome" value=""><br>
     <p id="giocatori"></p>
     <script>
+        let punti = 0;
         let arraySimboli = [
             '💎',
             '🤑',
@@ -72,8 +73,10 @@
             let slot2 = document.getElementById("slot2").innerHTML;
             let slot3 = document.getElementById("slot3").innerHTML;
 
-            if (slot1 == slot2 && slot2 == slot3)
+            if (slot1 == slot2 && slot2 == slot3){
                 document.getElementById("risultato").innerHTML = "Hai vinto!";
+                punti += 100;
+            }
             else
                 document.getElementById("risultato").innerHTML = "Hai perso!";
         }
@@ -91,7 +94,7 @@
             const utente = new Object();
             utente[nome] = document.getElementById("nome").value;
             socket.emit("registraUtente", utente[nome]);
-            document.getElementById("giocatori").innerHTML += utente[nome] + "<br>";
+            document.getElementById("giocatori").innerHTML += utente[nome] + ": " + punti + "<br>";
         }
         socket.on("registraUtente", function (data) {
             document.getElementById("giocatori").innerHTML += data + "<br>";
