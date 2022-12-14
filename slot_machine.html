@@ -93,7 +93,7 @@
         function registra() {
             const utente = new Object();
             utente[nome] = document.getElementById("nome").value;
-            socket.emit("registraUtente", utente[nome]);
+            socket.emit("registraUtente", document.getElementById("nome").value);
             document.getElementById("giocatori").innerHTML += utente[nome] + ": " + punti + "<br>";
         }
         socket.on("registraUtente", function (data) {

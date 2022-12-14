@@ -1,7 +1,6 @@
 const http = require("http");
 const fs = require("fs");
 const url = require("url");
-const utenti = [];
 const port = 3000;
 const ip = "127.0.0.1";
 let numUtenti = 0;
@@ -341,7 +340,8 @@ function requestHandler(request, response) {
 }
 
 const server = http.createServer(requestHandler);
-
+const utenti = [];
+const punti = [];
 server.listen(port, ip, function () {
     console.log("Server started on " + ip + ":" + port);
 });
@@ -355,12 +355,14 @@ const io = require("socket.io")(server, {
 
 io.sockets.on('connection', function (socket) {
     socket.username = socket.id; 
-    utenti.push(socket.id);		
+    //utenti.push(socket.id);		
     console.log('client: ' + socket.id);
 
     socket.on('registraUtente', function (data) {
         console.log("client: " + data);
+        utenti.push(data);
         socket.broadcast.emit('registraUtente', data);
-        console.log(numUtenti);
+        //console.log(numUtenti);
+        console.log(utenti);
     }); 
 });
