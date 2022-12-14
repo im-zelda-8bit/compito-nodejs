@@ -362,5 +362,17 @@ io.sockets.on('connection', function (socket) {
         console.log("client: " + data);
         socket.broadcast.emit('registraUtente', data);
         console.log(numUtenti);
-    }); 
+    });
+    
+    socket.on('giveList', (data) => {
+        let mess = [];
+        let fileJson = require("./wordList.json");
+        for(json in fileJson){
+            mess.push(json);
+        }
+        console.log(mess);
+    })
+    
 });
+
+server.listen(3000);
