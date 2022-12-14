@@ -37,7 +37,7 @@ function guessLetter(letterNumber){
         for(i=0; i<word.length; i++)
             if(word[i]===d){
                 indexes.push(i);
-            }
+        }
     }
 
     indexes.forEach( element => {
