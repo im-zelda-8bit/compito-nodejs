@@ -40,7 +40,7 @@ function guessLetter(letterNumber){
         for(i=0; i<word.length; i++)
             if(word[i]===d){
                 indexes.push(i);
-            }
+        }
     }
 
     //forEach che inserisce ogni lettera negli indici indicati

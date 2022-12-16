@@ -1,7 +1,6 @@
 const http = require("http");
 const fs = require("fs");
 const url = require("url");
-const utenti = [];
 const port = 3000;
 const ip = "127.0.0.1";
 let numUtenti = 0;
@@ -11,7 +10,6 @@ function requestHandler(request, response) {
 
     let objurl = url.parse(request.url, "false");
     const path = objurl.pathname;
-    console.log(path);
     switch (path) {
         case '/':
             fs.readFile('index.html', function (error, data) {
@@ -28,19 +26,6 @@ function requestHandler(request, response) {
 
         case '/slot':
             fs.readFile('slot_machine.html', function (error, data) {
-                if (error) {
-                    response.writeHead(404);
-                }
-                else {
-                    response.writeHead(200, { "content-Type": "text/html" });
-                    response.write(data, "utf8");
-                }
-                response.end();
-            });
-            break;
-
-        case '/battaglia':
-            fs.readFile('battaglia_navale.html', function (error, data) {
                 if (error) {
                     response.writeHead(404);
                 }
@@ -342,46 +327,70 @@ function requestHandler(request, response) {
 }
 
 const server = http.createServer(requestHandler);
-
+const utenti = [];
+const punti = [];
 server.listen(port, ip, function () {
     console.log("Server started on " + ip + ":" + port);
 });
 
-const io = require("socket.io")(server, {   // socket.io module and pass the http object(server)
-    cors: {									//  socket.io 4.5.3
+const io = require("socket.io")(server, {   
+    cors: {									
         origin: "http://localhost:3000",
         methods: ["GET", "POST"]
     }
 });
 
-io.sockets.on('connection', function (socket) { // WebSocket Connection 
-    //(è arrivata una richiesta di connessione dal client)
-    socket.username = socket.id; //memorizzo nella variabile di sessione username l'id del socket
-    utenti.push(socket.id);		//nel vettore users memorizzo  gli id dei socket connessi
-    console.log('cliente: connesso ' + socket.id);
-    //L’istruzione socket.emit permette di inviare al client
-    // il messaggio che contiene ip e porta del server
-    socket.emit('connesso', ip + " " + "porta:" + " " + port);
+io.sockets.on('connection', function (socket) {
+    socket.username = socket.id; 
+    //utenti.push(socket.id);		
+    console.log('client: ' + socket.id);
 
-    //funzione che gestisce i dati che arrivano da un client  
-    socket.on('messaggio', function (data) {
+    socket.on('registraUtente', function (data) {
         console.log("client: " + data);
-        //invio a tutti i client connessi il messaggio che è arrivato da un client
-        socket.broadcast.emit('messaggio', data);
-        console.log(numUtenti);
-    });
-    // funzione che gestisce la disconnessione del client
-    socket.on('disconnect', function () {
-        numClienti--;	//aggiorno il numero dei client connessi
-        console.log('Clienti connessi:', numClienti);
-        socket.broadcast.emit('stato', numClienti);//informo i client sul numero dei connessi
-        console.log('utente: disconnesso ' + socket.username);
-        for (var i = 0; i < users.length; i++) { //tolgo dal vettore users il socket.id che si disconnette
-            if (users[i] == socket.username) {
-                users.splice(i, 1);
-            }
-        }
-        delete socket;
+        utenti.push(data);
+        socket.broadcast.emit('registraUtente', data);
+        //console.log(numUtenti);
+        console.log(utenti);
     });
     
+    socket.on('giveList', (data) => {
+        let mess = [];
+        let fileJson = require("./wordList.json");
+        for(json in fileJson){
+            mess.push(json);
+        }
+        console.log(mess);
+    })
+    
 });
+
+function makeList(){
+
+    let mess = []
+    let parole = require("./wordList.json");
+    for (geso in parole){
+        mess.push(geso)
+    }
+    return mess;
+}
+
+function selectWord(){
+    let list = makeList()
+    let i;
+    let wordSelected = Math.floor(Math.random() * mess.length);
+    let wordToInsert = mess[wordSelected];
+    let word = wordToInsert;
+
+    for(i=0; i<wordToInsert.length; i++){
+        if(i-1<wordToInsert.length){
+            encoded+= "_ "; 
+        } else {
+            encoded+="_";
+        }
+    }
+
+    wordSplitted = encoded.split(" ");
+    document.getElementById('word').innerHTML = encoded;
+}
+
+server.listen(3000);

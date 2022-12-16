@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangman</title>
-    <script src="impiccatojs"></script>
+    <script src="/socket.io/client-dist/sosckt.io.js"></script>
     <link rel="stylesheet" href="hangcss">
     <link rel="stylesheet" href="css">
 </head>
@@ -21,36 +21,101 @@
         <h2>HANGMAN GAME</h2>
     </div>
 
+    <script>
+        var word = "";
+        var wordSplitted = "";
+        var encoded = "";
+        var counterLettersWrong = 0;
+        var lettersWrong = [];
 
+        function checkLetter(letterNumber){
+            
+            let d = document.getElementsByClassName("letter")[letterNumber].value;
+            let i=0;
+            let indexes = [];
+
+            socket.emit('giveList')
+
+            if(!word.includes(d)){
+            if(lettersWrong.includes(d)){
+                return;
+            }
+            counterLettersWrong+=1;
+
+            if(counterLettersWrong >= 11){
+                document.getElementById('currentState').innerHTML = "HAI PERSO";
+                document.getElementById('img').src = "/img11";
+                return;
+            }
+
+            //set correct image with counter
+            document.getElementById('img').src = "/img" + counterLettersWrong;
+            
+            //per vedere se la lettera schiacciata era già stata inserita
+            lettersWrong.push(d);
+            document.getElementById('currentState').innerHTML = "Non c'è la lettera " + d;
+
+            } else {
+                
+                for(i=0; i<word.length; i++)
+                    if(word[i]===d){
+                        indexes.push(i);
+                    }
+            }
+
+            indexes.forEach( element => {
+            wordSplitted[element] = d;
+            })
+
+            
+        console.log(wordSplitted);
+        if(wordSplitted.join("") == word){
+            document.getElementById('currentState').innerHTML = "HAI VINTO";
+        }
+            document.getElementById('word').innerHTML = wordSplitted.join(" ");
+        }
+
+        
+
+        function richiesta(){
+            socket.emit('giveList')
+        }
+        const socket = io.connect('http://127.0.0.1:3000/');
+        function gestisci() {
+            const utente = new Object();
+            socket.emit('giveList', json);
+        }
+        
+    </script>
 
 
     <div id="letterSpace">
-            <input class="letter" type="button" value="a" onclick="guessLetter(0)">
-            <input class="letter" type="button" value="b" onclick="guessLetter(1)">
-            <input class="letter" type="button" value="c" onclick="guessLetter(2)">
-            <input class="letter" type="button" value="d" onclick="guessLetter(3)">
-            <input class="letter" type="button" value="e" onclick="guessLetter(4)">
-            <input class="letter" type="button" value="f" onclick="guessLetter(5)">
-            <input class="letter" type="button" value="g" onclick="guessLetter(6)">
-            <input class="letter" type="button" value="h" onclick="guessLetter(7)">
-            <input class="letter" type="button" value="i" onclick="guessLetter(8)">
-            <input class="letter" type="button" value="j" onclick="guessLetter(9)">
-            <input class="letter" type="button" value="k" onclick="guessLetter(10)">
-            <input class="letter" type="button" value="m" onclick="guessLetter(11)">
-            <input class="letter" type="button" value="n" onclick="guessLetter(12)"><br><br>
-            <input class="letter" type="button" value="o" onclick="guessLetter(13)">
-            <input class="letter" type="button" value="p" onclick="guessLetter(14)">
-            <input class="letter" type="button" value="q" onclick="guessLetter(15)">
-            <input class="letter" type="button" value="r" onclick="guessLetter(16)">
-            <input class="letter" type="button" value="s" onclick="guessLetter(17)">
-            <input class="letter" type="button" value="t" onclick="guessLetter(18)">
-            <input class="letter" type="button" value="u" onclick="guessLetter(19)">
-            <input class="letter" type="button" value="v" onclick="guessLetter(20)">
-            <input class="letter" type="button" value="w" onclick="guessLetter(21)">
-            <input class="letter" type="button" value="x" onclick="guessLetter(22)">
-            <input class="letter" type="button" value="y" onclick="guessLetter(23)">
-            <input class="letter" type="button" value="z" onclick="guessLetter(24)">
-            <input class="letter" type="button" value="l" onclick="guessLetter(25)">
+            <input class="letter" type="button" value="a" onclick="checkLetter(0)">
+            <input class="letter" type="button" value="b" onclick="checkLetter(1)">
+            <input class="letter" type="button" value="c" onclick="checkLetter(2)">
+            <input class="letter" type="button" value="d" onclick="checkLetter(3)">
+            <input class="letter" type="button" value="e" onclick="checkLetter(4)">
+            <input class="letter" type="button" value="f" onclick="checkLetter(5)">
+            <input class="letter" type="button" value="g" onclick="checkLetter(6)">
+            <input class="letter" type="button" value="h" onclick="checkLetter(7)">
+            <input class="letter" type="button" value="i" onclick="checkLetter(8)">
+            <input class="letter" type="button" value="j" onclick="checkLetter(9)">
+            <input class="letter" type="button" value="k" onclick="checkLetter(10)">
+            <input class="letter" type="button" value="m" onclick="checkLetter(11)">
+            <input class="letter" type="button" value="n" onclick="checkLetter(12)"><br><br>
+            <input class="letter" type="button" value="o" onclick="checkLetter(13)">
+            <input class="letter" type="button" value="p" onclick="checkLetter(14)">
+            <input class="letter" type="button" value="q" onclick="checkLetter(15)">
+            <input class="letter" type="button" value="r" onclick="checkLetter(16)">
+            <input class="letter" type="button" value="s" onclick="checkLetter(17)">
+            <input class="letter" type="button" value="t" onclick="checkLetter(18)">
+            <input class="letter" type="button" value="u" onclick="checkLetter(19)">
+            <input class="letter" type="button" value="v" onclick="checkLetter(20)">
+            <input class="letter" type="button" value="w" onclick="checkLetter(21)">
+            <input class="letter" type="button" value="x" onclick="checkLetter(22)">
+            <input class="letter" type="button" value="y" onclick="checkLetter(23)">
+            <input class="letter" type="button" value="z" onclick="checkLetter(24)">
+            <input class="letter" type="button" value="l" onclick="checkLetter(25)">
     </div>
 
   <div id="image">
@@ -64,7 +129,6 @@
         <form action="impiccato" method="GET">
             <input type="submit" id="buttonResetPage" value="Reset Page">
         </form>
-        
     </div>
   
 </body>

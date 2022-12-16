@@ -7,7 +7,6 @@ let arraySimboli = [
     '🐟'
 ];
 
-  //carica socket.io nel client e connettiti al server
 let err = "";
 console.log('inizio');
 
@@ -26,7 +25,7 @@ async function spin() {
     await scorri("slot2", slot2);
     await scorri("slot3", slot3);
 
-    await vittoria();
+    vittoria();
 }
 
 async function scorri(slot, num) { 
