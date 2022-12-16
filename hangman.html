@@ -28,11 +28,13 @@
         var counterLettersWrong = 0;
         var lettersWrong = [];
 
-        function guessLetter(letterNumber){
+        function checkLetter(letterNumber){
             
             let d = document.getElementsByClassName("letter")[letterNumber].value;
             let i=0;
             let indexes = [];
+
+            socket.emit('giveList')
 
             if(!word.includes(d)){
             if(lettersWrong.includes(d)){
@@ -73,23 +75,7 @@
             document.getElementById('word').innerHTML = wordSplitted.join(" ");
         }
 
-        function createLetterSpaces(){
-            let i;
-            let wordSelected = Math.floor(Math.random() * wordsList.length);
-            let wordToInsert = wordsList[wordSelected];
-            word = wordToInsert;
         
-            for(i=0; i<wordToInsert.length; i++){
-                if(i-1<wordToInsert.length){
-                    encoded+= "_ "; 
-                } else {
-                    encoded+="_";
-                }
-            }
-        
-            wordSplitted = encoded.split(" ");
-            document.getElementById('word').innerHTML = encoded;
-        }
 
         function richiesta(){
             socket.emit('giveList')
@@ -104,32 +90,32 @@
 
 
     <div id="letterSpace">
-            <input class="letter" type="button" value="a" onclick="guessLetter(0)">
-            <input class="letter" type="button" value="b" onclick="guessLetter(1)">
-            <input class="letter" type="button" value="c" onclick="guessLetter(2)">
-            <input class="letter" type="button" value="d" onclick="guessLetter(3)">
-            <input class="letter" type="button" value="e" onclick="guessLetter(4)">
-            <input class="letter" type="button" value="f" onclick="guessLetter(5)">
-            <input class="letter" type="button" value="g" onclick="guessLetter(6)">
-            <input class="letter" type="button" value="h" onclick="guessLetter(7)">
-            <input class="letter" type="button" value="i" onclick="guessLetter(8)">
-            <input class="letter" type="button" value="j" onclick="guessLetter(9)">
-            <input class="letter" type="button" value="k" onclick="guessLetter(10)">
-            <input class="letter" type="button" value="m" onclick="guessLetter(11)">
-            <input class="letter" type="button" value="n" onclick="guessLetter(12)"><br><br>
-            <input class="letter" type="button" value="o" onclick="guessLetter(13)">
-            <input class="letter" type="button" value="p" onclick="guessLetter(14)">
-            <input class="letter" type="button" value="q" onclick="guessLetter(15)">
-            <input class="letter" type="button" value="r" onclick="guessLetter(16)">
-            <input class="letter" type="button" value="s" onclick="guessLetter(17)">
-            <input class="letter" type="button" value="t" onclick="guessLetter(18)">
-            <input class="letter" type="button" value="u" onclick="guessLetter(19)">
-            <input class="letter" type="button" value="v" onclick="guessLetter(20)">
-            <input class="letter" type="button" value="w" onclick="guessLetter(21)">
-            <input class="letter" type="button" value="x" onclick="guessLetter(22)">
-            <input class="letter" type="button" value="y" onclick="guessLetter(23)">
-            <input class="letter" type="button" value="z" onclick="guessLetter(24)">
-            <input class="letter" type="button" value="l" onclick="guessLetter(25)">
+            <input class="letter" type="button" value="a" onclick="checkLetter(0)">
+            <input class="letter" type="button" value="b" onclick="checkLetter(1)">
+            <input class="letter" type="button" value="c" onclick="checkLetter(2)">
+            <input class="letter" type="button" value="d" onclick="checkLetter(3)">
+            <input class="letter" type="button" value="e" onclick="checkLetter(4)">
+            <input class="letter" type="button" value="f" onclick="checkLetter(5)">
+            <input class="letter" type="button" value="g" onclick="checkLetter(6)">
+            <input class="letter" type="button" value="h" onclick="checkLetter(7)">
+            <input class="letter" type="button" value="i" onclick="checkLetter(8)">
+            <input class="letter" type="button" value="j" onclick="checkLetter(9)">
+            <input class="letter" type="button" value="k" onclick="checkLetter(10)">
+            <input class="letter" type="button" value="m" onclick="checkLetter(11)">
+            <input class="letter" type="button" value="n" onclick="checkLetter(12)"><br><br>
+            <input class="letter" type="button" value="o" onclick="checkLetter(13)">
+            <input class="letter" type="button" value="p" onclick="checkLetter(14)">
+            <input class="letter" type="button" value="q" onclick="checkLetter(15)">
+            <input class="letter" type="button" value="r" onclick="checkLetter(16)">
+            <input class="letter" type="button" value="s" onclick="checkLetter(17)">
+            <input class="letter" type="button" value="t" onclick="checkLetter(18)">
+            <input class="letter" type="button" value="u" onclick="checkLetter(19)">
+            <input class="letter" type="button" value="v" onclick="checkLetter(20)">
+            <input class="letter" type="button" value="w" onclick="checkLetter(21)">
+            <input class="letter" type="button" value="x" onclick="checkLetter(22)">
+            <input class="letter" type="button" value="y" onclick="checkLetter(23)">
+            <input class="letter" type="button" value="z" onclick="checkLetter(24)">
+            <input class="letter" type="button" value="l" onclick="checkLetter(25)">
     </div>
 
   <div id="image">

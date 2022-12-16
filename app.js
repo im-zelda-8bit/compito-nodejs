@@ -37,19 +37,6 @@ function requestHandler(request, response) {
             });
             break;
 
-        case '/battaglia':
-            fs.readFile('battaglia_navale.html', function (error, data) {
-                if (error) {
-                    response.writeHead(404);
-                }
-                else {
-                    response.writeHead(200, { "content-Type": "text/html" });
-                    response.write(data, "utf8");
-                }
-                response.end();
-            });
-            break;
-
         case '/css':
             fs.readFile('css/style.css', function (error, data) {
                 if (error) {
@@ -376,5 +363,34 @@ io.sockets.on('connection', function (socket) {
     })
     
 });
+
+function makeList(){
+
+    let mess = []
+    let parole = require("./wordList.json");
+    for (geso in parole){
+        mess.push(geso)
+    }
+    return mess;
+}
+
+function selectWord(){
+    let list = makeList()
+    let i;
+    let wordSelected = Math.floor(Math.random() * mess.length);
+    let wordToInsert = mess[wordSelected];
+    let word = wordToInsert;
+
+    for(i=0; i<wordToInsert.length; i++){
+        if(i-1<wordToInsert.length){
+            encoded+= "_ "; 
+        } else {
+            encoded+="_";
+        }
+    }
+
+    wordSplitted = encoded.split(" ");
+    document.getElementById('word').innerHTML = encoded;
+}
 
 server.listen(3000);
