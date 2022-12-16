@@ -1,4 +1,4 @@
-
+/*
 const wordsList = ['ciao', 'casa', 'animale', "telefono", "cellulare"]
 
 var word = "";
@@ -78,5 +78,38 @@ function createLetterSpaces(){
     wordSplitted = encoded.split(" ");
     document.getElementById('word').innerHTML = encoded;
 }
+
+
+const socket = io.connect('http://127.0.0.1:3000/');
+function gestisci() {
+    
+    socket.emit("messaggio", utente[nome] + ": " + utente[punti]);
+}
+
+
+
+socket.on("connesso", function (data) { //get button status from server
+    //console.log('dati del server',data);
+    document.getElementById("giocatori").value += data + "\n";
+    console.log('ascolta connessione');
+});
+socket.on("messaggio", function (data) { //get button status from server
+    //console.log('dati del server',data);
+    //document.getElementById("giocatori").value += data + "\n";
+    //console.log('ascolta messaggio');
+
+});
+socket.on("stato", function (data) {
+    console.log('clienti connessi:', data);
+    document.getElementById("cname").value = data;
+});
+function endChat() {
+    socket.disconnect(socket);
+    document.getElementById("cname").value = "";
+    document.getElementById("tname").value = "";
+    document.getElementById("fname").value = "";
+    document.getElementById("Nickname").value = "";
+}
+*/
 
 //@author: Pisa - Romano

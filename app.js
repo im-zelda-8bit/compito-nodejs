@@ -302,6 +302,8 @@ function requestHandler(request, response) {
                     response.writeHead(404);
                 }
                 else {
+                    let jsonObj = require("./wordsList.json");
+                    console.log(JSON.stringify(jsonObj, null, 2));
                     response.writeHead(200, { "content-Type": "text/javascript" });
                     response.write(data, "utf8");
                 }
