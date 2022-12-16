@@ -356,12 +356,14 @@ io.sockets.on('connection', function (socket) {
     });
     
     socket.on('giveList', (data) => {
-        let mess = [];
-        let fileJson = require("./wordList.json");
-        for(json in fileJson){
-            mess.push(json);
+        if(data==1){
+            let word = selectWord()
+            socket.broadcast.emit('giveList', word);
+            console.log(word);
+        } else {
+
         }
-        console.log(mess);
+        
     })
     
 });
@@ -392,7 +394,7 @@ function selectWord(){
     }
 
     wordSplitted = encoded.split(" ");
-    document.getElementById('word').innerHTML = encoded;
+    return encoded;
 }
 
 server.listen(3000);

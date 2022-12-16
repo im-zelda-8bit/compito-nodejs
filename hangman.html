@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="hangcss">
     <link rel="stylesheet" href="css">
 </head>
-<body onload="createLetterSpaces()">
+<body>
     
     <ul>
         <li><a href="/">Home</a></li>
@@ -22,9 +22,6 @@
     </div>
 
     <script>
-        var word = "";
-        var wordSplitted = "";
-        var encoded = "";
         var counterLettersWrong = 0;
         var lettersWrong = [];
 
@@ -77,14 +74,20 @@
 
         
 
-        function richiesta(){
-            socket.emit('giveList')
-        }
+
+        
+
         const socket = io.connect('http://127.0.0.1:3000/');
         function gestisci() {
             const utente = new Object();
             socket.emit('giveList', json);
         }
+        function inizia(){
+            socket.emit('giveList', 1);
+        }
+        socket.on('giveList', (data) => {
+            docuemnt.getElementById('word').innerHTML = data;
+        })
         
     </script>
 
@@ -118,6 +121,9 @@
             <input class="letter" type="button" value="l" onclick="checkLetter(25)">
     </div>
 
+    <div id="start">
+        <input type="button" name="startButton" value="Start the game!" onclick="inizia();">
+    </div>
   <div id="image">
       <img src="img0" id="img" width="400" height="400">
   </div>
