@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hangman</title>
-    <script src="/socket.io/client-dist/sosckt.io.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
     <link rel="stylesheet" href="hangcss">
     <link rel="stylesheet" href="css">
 </head>
@@ -36,8 +36,6 @@
             let d = letters[letterNumber].value;
             let i=0;
             let indexes = [];
-
-            socket.emit('giveList')
 
             if(!word.includes(d)){
             if(lettersWrong.includes(d)){
@@ -79,15 +77,13 @@
         }
 
         function inizia(){
-            console.log("socket trying to connect");
             socket.emit('start');
         }
             
         socket.on("giveWord", (data) => {
-            wordPos.innerHTML = data;
-        })
-        
-        
+            console.log(data);
+            wordPos.innerHTML += data;
+        })        
     </script>
 
 
@@ -121,7 +117,7 @@
     </div>
 
     <div id="start">
-        <input type="button" name="startButton" value="Start the game!" onclick="inizia()">
+        <input type="button" value="Start the game!" onclick="inizia()">
     </div>
   <div id="image">
       <img src="img0" id="img" width="400" height="400">

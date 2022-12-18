@@ -331,6 +331,7 @@ function requestHandler(request, response) {
 const server = http.createServer(requestHandler);
 const utenti = [];
 const punti = [];
+var finalWord = "";
 server.listen(port, ip, function () {
     console.log("Server started on " + ip + ":" + port);
 });
@@ -358,7 +359,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('start', () => {
         
         let word = selectWord()
-        console.log(word);
+        console.log(word + " dal server");
         socket.emit('giveWord', word);
         
         
@@ -379,9 +380,11 @@ function makeList(){
 function selectWord(){
     let list = makeList()
     let i;
-    let wordSelected = Math.floor(Math.random() * mess.length);
-    let wordToInsert = mess[wordSelected];
-    let word = wordToInsert;
+    let encoded = ""
+    let wordSelected = Math.floor(Math.random() * list.length);
+    let wordToInsert = list[wordSelected];
+    finalWord = wordToInsert;
+    console.log(finalWord)
 
     for(i=0; i<wordToInsert.length; i++){
         if(i-1<wordToInsert.length){
