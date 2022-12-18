@@ -22,12 +22,18 @@
     </div>
 
     <script>
+        const socket = io.connect('http://127.0.0.1:3000/');
+
+        const letters = document.getElementsByClassName('letter')
+        const currentState = document.getElementById('currentState')
+        const image = document.getElementById('img')
+        const wordPos = document.getElementById('word')
         var counterLettersWrong = 0;
         var lettersWrong = [];
 
         function checkLetter(letterNumber){
             
-            let d = document.getElementsByClassName("letter")[letterNumber].value;
+            let d = letters[letterNumber].value;
             let i=0;
             let indexes = [];
 
@@ -40,17 +46,17 @@
             counterLettersWrong+=1;
 
             if(counterLettersWrong >= 11){
-                document.getElementById('currentState').innerHTML = "HAI PERSO";
-                document.getElementById('img').src = "/img11";
+                currentState.innerHTML = "HAI PERSO";
+                image.src = "/img11";
                 return;
             }
 
             //set correct image with counter
-            document.getElementById('img').src = "/img" + counterLettersWrong;
+            image.src = "/img" + counterLettersWrong;
             
             //per vedere se la lettera schiacciata era già stata inserita
             lettersWrong.push(d);
-            document.getElementById('currentState').innerHTML = "Non c'è la lettera " + d;
+            currentState.innerHTML = "Non c'è la lettera " + d;
 
             } else {
                 
@@ -67,27 +73,20 @@
             
         console.log(wordSplitted);
         if(wordSplitted.join("") == word){
-            document.getElementById('currentState').innerHTML = "HAI VINTO";
+            currentState.innerHTML = "HAI VINTO";
         }
-            document.getElementById('word').innerHTML = wordSplitted.join(" ");
+            wordPos.innerHTML = wordSplitted.join(" ");
         }
 
-        
-
-
-        
-
-        const socket = io.connect('http://127.0.0.1:3000/');
-        function gestisci() {
-            const utente = new Object();
-            socket.emit('giveList', json);
-        }
         function inizia(){
-            socket.emit('giveList', 1);
+            console.log("socket trying to connect");
+            socket.emit('start');
         }
-        socket.on('giveList', (data) => {
-            docuemnt.getElementById('word').innerHTML = data;
+            
+        socket.on("giveWord", (data) => {
+            wordPos.innerHTML = data;
         })
+        
         
     </script>
 
@@ -122,14 +121,14 @@
     </div>
 
     <div id="start">
-        <input type="button" name="startButton" value="Start the game!" onclick="inizia();">
+        <input type="button" name="startButton" value="Start the game!" onclick="inizia()">
     </div>
   <div id="image">
       <img src="img0" id="img" width="400" height="400">
   </div>
 
     <h1 id="currentState"></h1>
-    <h1 id="word"></h1>
+    <h1 id="word">ciao</h1>
 
     <div id="resetPage">
         <form action="impiccato" method="GET">

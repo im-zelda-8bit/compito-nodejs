@@ -355,14 +355,12 @@ io.sockets.on('connection', function (socket) {
         console.log(utenti);
     });
     
-    socket.on('giveList', (data) => {
-        if(data==1){
-            let word = selectWord()
-            socket.broadcast.emit('giveList', word);
-            console.log(word);
-        } else {
-
-        }
+    socket.on('start', () => {
+        
+        let word = selectWord()
+        console.log(word);
+        socket.emit('giveWord', word);
+        
         
     })
     

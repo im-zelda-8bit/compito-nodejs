@@ -63,3 +63,10 @@ body{
     margin: auto;
     width: 100px;
 }
+
+#start{
+    margin: auto;
+    text-align: center;
+    width: 5%;
+    margin-top: 50px;
+}
