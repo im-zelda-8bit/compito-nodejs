@@ -332,6 +332,7 @@ const server = http.createServer(requestHandler);
 const utenti = [];
 const punti = [];
 var finalWord = "";
+
 server.listen(port, ip, function () {
     console.log("Server started on " + ip + ":" + port);
 });
@@ -343,27 +344,24 @@ const io = require("socket.io")(server, {
     }
 });
 
-io.sockets.on('connection', function (socket) {
+io.on('connection', function (socket) {
     socket.username = socket.id; 
-    //utenti.push(socket.id);		
     console.log('client: ' + socket.id);
 
     socket.on('registraUtente', function (data) {
         console.log("client: " + data);
         utenti.push(data);
         socket.broadcast.emit('registraUtente', data);
-        //console.log(numUtenti);
         console.log(utenti);
     });
     
     socket.on('start', () => {
-        
-        let word = selectWord()
+
+        let word = selectWord();
         console.log(word + " dal server");
-        socket.emit('giveWord', word);
+        socket.emit('start', (word));
         
-        
-    })
+    })  
     
 });
 
@@ -384,7 +382,6 @@ function selectWord(){
     let wordSelected = Math.floor(Math.random() * list.length);
     let wordToInsert = list[wordSelected];
     finalWord = wordToInsert;
-    console.log(finalWord)
 
     for(i=0; i<wordToInsert.length; i++){
         if(i-1<wordToInsert.length){

@@ -21,8 +21,56 @@
         <h2>HANGMAN GAME</h2>
     </div>
 
+    
+    <div id="start">
+        <button onclick="inizia()">Start the game!</button>
+    </div>
+
+    <div id="letterSpace">
+            <input class="letter" type="button" value="a" onclick="checkLetter(0)">
+            <input class="letter" type="button" value="b" onclick="checkLetter(1)">
+            <input class="letter" type="button" value="c" onclick="checkLetter(2)">
+            <input class="letter" type="button" value="d" onclick="checkLetter(3)">
+            <input class="letter" type="button" value="e" onclick="checkLetter(4)">
+            <input class="letter" type="button" value="f" onclick="checkLetter(5)">
+            <input class="letter" type="button" value="g" onclick="checkLetter(6)">
+            <input class="letter" type="button" value="h" onclick="checkLetter(7)">
+            <input class="letter" type="button" value="i" onclick="checkLetter(8)">
+            <input class="letter" type="button" value="j" onclick="checkLetter(9)">
+            <input class="letter" type="button" value="k" onclick="checkLetter(10)">
+            <input class="letter" type="button" value="m" onclick="checkLetter(11)">
+            <input class="letter" type="button" value="n" onclick="checkLetter(12)"><br><br>
+            <input class="letter" type="button" value="o" onclick="checkLetter(13)">
+            <input class="letter" type="button" value="p" onclick="checkLetter(14)">
+            <input class="letter" type="button" value="q" onclick="checkLetter(15)">
+            <input class="letter" type="button" value="r" onclick="checkLetter(16)">
+            <input class="letter" type="button" value="s" onclick="checkLetter(17)">
+            <input class="letter" type="button" value="t" onclick="checkLetter(18)">
+            <input class="letter" type="button" value="u" onclick="checkLetter(19)">
+            <input class="letter" type="button" value="v" onclick="checkLetter(20)">
+            <input class="letter" type="button" value="w" onclick="checkLetter(21)">
+            <input class="letter" type="button" value="x" onclick="checkLetter(22)">
+            <input class="letter" type="button" value="y" onclick="checkLetter(23)">
+            <input class="letter" type="button" value="z" onclick="checkLetter(24)">
+            <input class="letter" type="button" value="l" onclick="checkLetter(25)">
+    </div>
+
+    
+    <div id="image">
+        <img src="img0" id="img" width="400" height="400">
+    </div>
+
+    <h1 id="currentState"></h1>
+    <p id="word"></p>
+
+    <div id="resetPage">
+        <form action="impiccato" method="GET">
+            <input type="submit" id="buttonResetPage" value="Reset Page">
+        </form>
+    </div>
+  
     <script>
-        const socket = io.connect('http://127.0.0.1:3000/');
+        
 
         const letters = document.getElementsByClassName('letter')
         const currentState = document.getElementById('currentState')
@@ -76,61 +124,15 @@
             wordPos.innerHTML = wordSplitted.join(" ");
         }
 
+        const socket = io.connect('http://127.0.0.1:3000/');
+
         function inizia(){
             socket.emit('start');
-        }
-            
-        socket.on("giveWord", (data) => {
-            console.log(data);
-            wordPos.innerHTML += data;
-        })        
+        }      
+
+        socket.on('giveList', (word) => {console.log("same"); wordPos.innerHTML = word;})
+
     </script>
 
-
-    <div id="letterSpace">
-            <input class="letter" type="button" value="a" onclick="checkLetter(0)">
-            <input class="letter" type="button" value="b" onclick="checkLetter(1)">
-            <input class="letter" type="button" value="c" onclick="checkLetter(2)">
-            <input class="letter" type="button" value="d" onclick="checkLetter(3)">
-            <input class="letter" type="button" value="e" onclick="checkLetter(4)">
-            <input class="letter" type="button" value="f" onclick="checkLetter(5)">
-            <input class="letter" type="button" value="g" onclick="checkLetter(6)">
-            <input class="letter" type="button" value="h" onclick="checkLetter(7)">
-            <input class="letter" type="button" value="i" onclick="checkLetter(8)">
-            <input class="letter" type="button" value="j" onclick="checkLetter(9)">
-            <input class="letter" type="button" value="k" onclick="checkLetter(10)">
-            <input class="letter" type="button" value="m" onclick="checkLetter(11)">
-            <input class="letter" type="button" value="n" onclick="checkLetter(12)"><br><br>
-            <input class="letter" type="button" value="o" onclick="checkLetter(13)">
-            <input class="letter" type="button" value="p" onclick="checkLetter(14)">
-            <input class="letter" type="button" value="q" onclick="checkLetter(15)">
-            <input class="letter" type="button" value="r" onclick="checkLetter(16)">
-            <input class="letter" type="button" value="s" onclick="checkLetter(17)">
-            <input class="letter" type="button" value="t" onclick="checkLetter(18)">
-            <input class="letter" type="button" value="u" onclick="checkLetter(19)">
-            <input class="letter" type="button" value="v" onclick="checkLetter(20)">
-            <input class="letter" type="button" value="w" onclick="checkLetter(21)">
-            <input class="letter" type="button" value="x" onclick="checkLetter(22)">
-            <input class="letter" type="button" value="y" onclick="checkLetter(23)">
-            <input class="letter" type="button" value="z" onclick="checkLetter(24)">
-            <input class="letter" type="button" value="l" onclick="checkLetter(25)">
-    </div>
-
-    <div id="start">
-        <input type="button" value="Start the game!" onclick="inizia()">
-    </div>
-  <div id="image">
-      <img src="img0" id="img" width="400" height="400">
-  </div>
-
-    <h1 id="currentState"></h1>
-    <h1 id="word">ciao</h1>
-
-    <div id="resetPage">
-        <form action="impiccato" method="GET">
-            <input type="submit" id="buttonResetPage" value="Reset Page">
-        </form>
-    </div>
-  
 </body>
 </html>
