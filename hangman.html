@@ -23,7 +23,7 @@
 
     
     <div id="start">
-        <button onclick="inizia()">Start the game!</button>
+        <button onclick="inizia()">Start The Game!</button>
     </div>
 
     <div id="letterSpace">
@@ -70,19 +70,20 @@
     </div>
   
     <script>
-        
-
         const letters = document.getElementsByClassName('letter')
         const currentState = document.getElementById('currentState')
         const image = document.getElementById('img')
         const wordPos = document.getElementById('word')
         var counterLettersWrong = 0;
         var lettersWrong = [];
+        var lSelect = "";
+        var wordSplitted = "";
 
         
         function guessLetter(letterNumber){
             
             let letter = letters[letterNumber].value;
+            lSelect = letter;
             socket.emit('checkLetter', letter);
             
         }
@@ -101,6 +102,34 @@
             return encoded;
         }
 
+        function putLettersCorrectly(pos, wrongNum){
+            
+            
+            //controls if the letters in input in the list are major or equal than 11
+            if(wrongNum >= 11){
+                currentState.innerHTML = "HAI PERSO";
+                image.src = "/img11";
+                return;
+            }
+
+            //set correct image with counter
+            image.src = "/img" + wrongNum;
+            
+            //per vedere se la lettera schiacciata era già stata inserita
+            currentState.innerHTML = "Non c'è la lettera " + lSelect;
+
+            pos.forEach( element => {
+                wordSplitted[element] = lSelect;
+            })
+
+            console.log(wordSplitted);
+
+            if(wordSplitted.join("") == word && wrongNum < 11)
+                currentState.innerHTML = "HAI VINTO";
+
+            wordPos.innerHTML = wordSplitted.join(" ");
+        }
+
         const socket = io.connect('http://127.0.0.1:3000/');
 
         function inizia(){
@@ -111,6 +140,10 @@
         socket.on('giveLength', (length) => {
             console.log("same"); 
             wordPos.innerHTML = createDashedWord(length);
+        })
+
+        socket.on('isInIsNot', (pos, wrongNum) => {
+            putLettersCorrectly(pos, wrongNum);
         })
 
     </script>

@@ -367,6 +367,7 @@ io.on('connection', function (socket) {
     socket.on('checkLetter', (letter) => {
         let checkReturn = checkLetter(letter);
         let pos = checkReturn[0]
+        if(pos.length == 0){return;}
         let wrongNum = checkReturn[1]
         socket.emit('isInIsNot', pos, wrongNum);
     })
@@ -386,12 +387,14 @@ function selectWord(){
     finalWord = mess[wordSelected];
     let wLength = mess[wordSelected].length;
 
+    console.log(finalWord);
     return wLength;
 
 }
 
 function checkLetter(letter){
             
+    console.log(letter);
     let i=0;
     let indexes = [];
 
@@ -400,7 +403,7 @@ function checkLetter(letter){
         if(lettersWrong.includes(letter)){
             return;
         }
-        counterLettersWrong+=1;
+        
         lettersWrong.push(letter);
 
     } else {
@@ -413,32 +416,5 @@ function checkLetter(letter){
 
     return [indexes, lettersWrong.length]
 }
-/*
-        if(counterLettersWrong >= 11){
-            currentState.innerHTML = "HAI PERSO";
-            image.src = "/img11";
-            return;
-        }
-
-        //set correct image with counter
-        image.src = "/img" + counterLettersWrong;
-        
-        //per vedere se la lettera schiacciata era già stata inserita
-        
-        currentState.innerHTML = "Non c'è la lettera " + d;
-
-    
-
-    indexes.forEach( element => {
-    wordSplitted[element] = letter;
-    })
-
-    
-console.log(wordSplitted);
-if(wordSplitted.join("") == word)
-    currentState.innerHTML = "HAI VINTO";
-
-wordPos.innerHTML = wordSplitted.join(" ");*/
-
 
 server.listen(3000);
