@@ -357,42 +357,29 @@ io.on('connection', function (socket) {
     
     socket.on('start', () => {
 
-        let word = selectWord();
-        console.log(word + " dal server");
-        socket.emit('start', (word));
+        let length = selectWord();
+        //console.log(length + " dal server");
+        socket.emit('giveLength', (length));
         
     })  
     
 });
 
-function makeList(){
+function selectWord(){
 
-    let mess = []
     let parole = require("./wordList.json");
+    let mess = []
+    
     for (geso in parole){
         mess.push(geso)
     }
-    return mess;
-}
 
-function selectWord(){
-    let list = makeList()
-    let i;
-    let encoded = ""
-    let wordSelected = Math.floor(Math.random() * list.length);
-    let wordToInsert = list[wordSelected];
-    finalWord = wordToInsert;
+    let wordSelected = Math.floor(Math.random() * mess.length);
+    finalWord = mess[wordSelected];
+    let wLength = mess[wordSelected].length;
 
-    for(i=0; i<wordToInsert.length; i++){
-        if(i-1<wordToInsert.length){
-            encoded+= "_ "; 
-        } else {
-            encoded+="_";
-        }
-    }
+    return wLength;
 
-    wordSplitted = encoded.split(" ");
-    return encoded;
 }
 
 server.listen(3000);

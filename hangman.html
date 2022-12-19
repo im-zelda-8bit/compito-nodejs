@@ -124,13 +124,31 @@
             wordPos.innerHTML = wordSplitted.join(" ");
         }
 
+        function createDashedWord(wLength){
+            
+            for(i=0; i<wLength; i++){
+                if(i-1<wLength){
+                    encoded+= "_ "; 
+                } else {
+                    encoded+="_";
+                }
+            }
+
+            wordSplitted = encoded.split(" ");
+            return encoded;
+        }
+
         const socket = io.connect('http://127.0.0.1:3000/');
 
         function inizia(){
+            wordPos.innerHTML = "ciao";
             socket.emit('start');
         }      
 
-        socket.on('giveList', (word) => {console.log("same"); wordPos.innerHTML = word;})
+        socket.on('giveLength', (length) => {
+            console.log("same"); 
+            wordPos.innerHTML = createDashedWord(length);
+        })
 
     </script>
 
