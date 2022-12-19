@@ -365,11 +365,15 @@ io.on('connection', function (socket) {
     })  
 
     socket.on('checkLetter', (letter) => {
-        let checkReturn = checkLetter(letter);
-        let pos = checkReturn[0]
-        if(pos.length == 0){return;}
-        let wrongNum = checkReturn[1]
-        socket.emit('isInIsNot', pos, wrongNum);
+        try{
+            let checkReturn = checkLetter(letter);
+            let pos = checkReturn[0]
+            let wrongNum = checkReturn[1]
+            socket.emit('isInIsNot', pos, wrongNum);
+        } catch(err){
+            console.error(err);
+        }
+        
     })
     
 });
