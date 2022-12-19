@@ -345,7 +345,7 @@ const io = require("socket.io")(server, {
     }
 });
 
-io.on('connection', function (socket) {
+io.sockets.on('connection', function (socket) {
     socket.username = socket.id; 
     console.log('client: ' + socket.id);
 
@@ -360,7 +360,7 @@ io.on('connection', function (socket) {
 
         let length = selectWord();
         //console.log(length + " dal server");
-        socket.emit('giveLength', (length));
+        socket.emit('giveLength', length);
         
     })  
 
@@ -374,6 +374,16 @@ io.on('connection', function (socket) {
             console.error(err);
         }
         
+    })
+
+    socket.on('reset', () => {
+        try{
+            finalWord = "";
+            lettersWrong = [];
+            console.log("RESETTED");
+        } catch(err){
+            console.error(err);
+        }
     })
     
 });

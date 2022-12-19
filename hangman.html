@@ -64,9 +64,9 @@
     <p id="word"></p>
 
     <div id="resetPage">
-        <form action="impiccato" method="GET">
-            <input type="submit" id="buttonResetPage" value="Reset Page">
-        </form>
+        
+        <input type="button" id="buttonResetPage" value="Reset Page" onclick="reset()">
+        
     </div>
   
     <script>
@@ -79,6 +79,16 @@
         var lSelect = "";
         var wordSplitted = "";
 
+        function reset(){
+            counterLettersWrong = 0;
+            currentState.innerHTML = "";
+            image.src = "img/img0";
+            wordPos.innerHTML = "";
+            lettersWrong = [];
+            lSelect = "";
+            wordSplitted = "";
+            socket.emit('reset');
+        }
         
         function guessLetter(letterNumber){
             
@@ -92,18 +102,16 @@
             
             for(i=0; i<wLength; i++){
                 if(i-1<wLength){
-                    encoded+= "_ "; 
+                    encoded+= "_ ";
                 } else {
                     encoded+="_";
                 }
             }
 
             wordSplitted = encoded.split(" ");
-            return encoded;
         }
 
         function putLettersCorrectly(pos, wrongNum){
-            
             
             //controls if the letters in input in the list are major or equal than 11
             if(wrongNum >= 11){
@@ -114,6 +122,8 @@
 
             //set correct image with counter
             image.src = "/img" + wrongNum;
+
+            console.log(lSelect);
             
             //per vedere se la lettera schiacciata era già stata inserita
             currentState.innerHTML = "Non c'è la lettera " + lSelect;
@@ -139,7 +149,7 @@
 
         socket.on('giveLength', (length) => {
             console.log("same"); 
-            wordPos.innerHTML = createDashedWord(length);
+            wordPos.textContent = createDashedWord(length);
         })
 
         socket.on('isInIsNot', (pos, wrongNum) => {
