@@ -152,7 +152,7 @@
             wordPos.textContent = await createDashedWord(length);
         })
 
-        socket.on('isInIsNot', async(pos, wrongNum) => {
+        socket.on('isInWord', async(pos, wrongNum) => {
             await putLettersCorrectly(pos, wrongNum);
         })
 

@@ -388,7 +388,7 @@ io.sockets.on('connection', function (socket) {
             let checkReturn = await checkLetter(letter);
             let pos = checkReturn[0]
             let wrongNum = checkReturn[1]
-            socket.emit('isInIsNot', pos, wrongNum);
+            socket.emit('isInWord', pos, wrongNum);
         } catch(err){
             console.error(err);
         }
