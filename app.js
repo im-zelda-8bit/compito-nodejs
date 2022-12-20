@@ -355,6 +355,25 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.emit('registraUtente', data);
         console.log(utenti);
     });
+
+    socket.on('setPunti', function (data) {
+        console.log("punti: " + data);
+        punti.push(data);
+        socket.broadcast.emit('setPunti', data);
+    });
+
+    socket.on('aggiorna', function (data) {
+        console.log(data);
+        for (let i = 0; i < utenti.length; i++) {
+            if (utenti[i] == data[0]) {
+                punti[i] = data[1]
+            }
+        }
+        //punti.push(data[1]);
+        testo = punti.join("<br>");
+        socket.emit('aggiornaPuntiServer', testo);
+        socket.broadcast.emit('aggiornaPuntiServer', testo);
+    });
     
     socket.on('start', async () => {
 
@@ -387,6 +406,11 @@ io.sockets.on('connection', function (socket) {
     })
     
 });
+
+function aggiornaPunti() {
+    testo = punti.join("\n");
+    socket.emit("aggiornaPuntiServer", testo);
+}
 
 function selectWord(){
 

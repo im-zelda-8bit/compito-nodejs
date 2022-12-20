@@ -39,3 +39,9 @@ h2 {
 p {
     color: white;
 }
+#giocatori {
+    float: left;
+}
+#punti {
+    float: left;
+}

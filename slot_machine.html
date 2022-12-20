@@ -25,9 +25,12 @@
     </div>
     <label for="nome">Nome: </label>
     <input type="text" id="nome" name="nome" value=""><br>
+    <button onclick="registra()">Invia</button>
     <p id="giocatori"></p>
+    <p id="punti"></p>
     <script>
         let punti = 0;
+        let nome ="";
         let arraySimboli = [
             '💎',
             '🤑',
@@ -38,6 +41,7 @@
         ];
         let utenti = [];
         let err = "";
+        let nomePunti= [];
         console.log('inizio');
 
         const utente = {
@@ -52,10 +56,10 @@
             let slot2 = getRandomInt(5);
             let slot3 = getRandomInt(5);
 
-            await registra();
-            await scorri("slot1", slot1);
-            await scorri("slot2", slot2);
-            await scorri("slot3", slot3);
+            //await registra();
+            await scorri("slot1", 1);
+            await scorri("slot2", 1);
+            await scorri("slot3", 1);
 
             await vittoria();
         }
@@ -76,6 +80,9 @@
             if (slot1 == slot2 && slot2 == slot3){
                 document.getElementById("risultato").innerHTML = "Hai vinto!";
                 punti += 100;
+                nomePunti[1] = punti;
+                socket.emit("aggiorna", nomePunti)
+                
             }
             else
                 document.getElementById("risultato").innerHTML = "Hai perso!";
@@ -92,13 +99,27 @@
         const socket = io.connect('http://127.0.0.1:3000/');
         function registra() {
             const utente = new Object();
-            utente[nome] = document.getElementById("nome").value;
-            socket.emit("registraUtente", document.getElementById("nome").value);
-            document.getElementById("giocatori").innerHTML += utente[nome] + ": " + punti + "<br>";
+            nome = document.getElementById("nome").value;
+            nomePunti.push(nome);
+            nomePunti.push(punti);
+            socket.emit("registraUtente", nome);
+            socket.emit("setPunti", punti);
+            document.getElementById("giocatori").innerHTML += nome + ": " + "<br>";
+            document.getElementById("punti").innerHTML += punti + "<br>";
         }
         socket.on("registraUtente", function (data) {
-            document.getElementById("giocatori").innerHTML += data + "<br>";
+            document.getElementById("giocatori").innerHTML += data + ": " + "<br>";
         });
+
+        socket.on("setPunti", function (data) {
+            document.getElementById("punti").innerHTML += data + "<br>";
+        });
+
+        socket.on("aggiornaPuntiServer", function (data) {
+            document.getElementById("punti").innerHTML = data;
+        });
+
+        
     </script>
 </body>
 </html>
