@@ -16,6 +16,12 @@
         <li><a class="active"  href="/slot">Slot Machine</a></li>
         <li><a href="/impiccato">Hangman</a></li>
     </ul>
+    <div id="login">
+        <label for="nome">Nome: </label>
+        <input type="text" id="nome" name="nome" value=""><br>
+        <button onclick="registra()" id="buttonInvia">Invia</button>
+    </div>
+
     <div id="container"">
         <div id="slot1" class="slot">🍇</div>
         <div id="slot2" class="slot">💎</div>
@@ -23,11 +29,13 @@
         <br><button onclick="spin()" id="button">Spin</button>
         <h2 id="risultato"></h2>
     </div>
-    <label for="nome">Nome: </label>
-    <input type="text" id="nome" name="nome" value=""><br>
-    <button onclick="registra()">Invia</button>
-    <p id="giocatori"></p>
-    <p id="punti"></p>
+    
+    <div id="tabellaPunteggio">
+        <h2 id="titoloPunti">Punti:</h2>
+        <p id="giocatori"></p>
+        <p id="punti"></p>
+    </div>
+    
     <script>
         let punti = 0;
         let nome ="";
@@ -51,17 +59,22 @@
         };
 
         async function spin() {
-            document.getElementById("risultato").innerHTML = "";
-            let slot1 = getRandomInt(5);
-            let slot2 = getRandomInt(5);
-            let slot3 = getRandomInt(5);
+            if(nome != "")  {
+                document.getElementById("risultato").innerHTML = "";
+                let slot1 = getRandomInt(5);
+                let slot2 = getRandomInt(5);
+                let slot3 = getRandomInt(5);
 
-            //await registra();
-            await scorri("slot1", 1);
-            await scorri("slot2", 1);
-            await scorri("slot3", 1);
-
-            await vittoria();
+                //await registra();
+                await scorri("slot1", 1);
+                await scorri("slot2", 1);
+                await scorri("slot3", 1);
+                await vittoria();
+            }
+            else {
+                alert("Non hai inseirto il tuo nome!")
+            }
+            
         }
 
         async function scorri(slot, num) {
@@ -81,8 +94,7 @@
                 document.getElementById("risultato").innerHTML = "Hai vinto!";
                 punti += 100;
                 nomePunti[1] = punti;
-                socket.emit("aggiorna", nomePunti)
-                
+                socket.emit("aggiorna", nomePunti);
             }
             else
                 document.getElementById("risultato").innerHTML = "Hai perso!";
