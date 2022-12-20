@@ -375,6 +375,10 @@ io.sockets.on('connection', function (socket) {
         socket.broadcast.emit('aggiornaPuntiServer', testo);
     });
     
+    /**
+     * This is called when the client click the Start the game button, and sends
+     * the information for the length of the word to the client
+     */
     socket.on('start', async () => {
 
         let length = await selectWord();
@@ -383,6 +387,9 @@ io.sockets.on('connection', function (socket) {
         
     })  
 
+    /**
+     * Send informations to the client for the letter selected before in the word
+     */
     socket.on('checkLetter', async (letter) => {
         try{
             let checkReturn = await checkLetter(letter);
@@ -395,6 +402,9 @@ io.sockets.on('connection', function (socket) {
         
     })
 
+    /**
+     * Resets informations and lists to play again when you click "reset page" button
+     */
     socket.on('reset', () => {
         try{
             finalWord = "";
@@ -412,6 +422,10 @@ function aggiornaPunti() {
     socket.emit("aggiornaPuntiServer", testo);
 }
 
+/**
+ * this function is needed to send the length of the word selected to play Hangman, through Socket.emit
+ * @returns the length of the word
+ */
 function selectWord(){
 
     let parole = require("./wordList.json");
@@ -430,6 +444,11 @@ function selectWord(){
 
 }
 
+/**
+ * This function is called in the Socket.on "checkLetter" to check if the letter selected from the client is inside the word
+ * @param {*} letter is the letter selected in the client
+ * @returns the indexes of the letter in the word and the number of times that you put a wrong letter, to set the right image in the client
+ */
 function checkLetter(letter){
             
     console.log(letter);

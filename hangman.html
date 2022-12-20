@@ -79,7 +79,7 @@
         var lSelect = "";
         var wordSplitted = "";
 
-        function reset(){
+        async function reset(){
             counterLettersWrong = 0;
             currentState.innerHTML = "";
             image.src = "img/img0";
@@ -90,7 +90,7 @@
             socket.emit('reset');
         }
         
-        function guessLetter(letterNumber){
+        async function guessLetter(letterNumber){
             
             let letter = letters[letterNumber].value;
             lSelect = letter;
@@ -98,7 +98,7 @@
             
         }
 
-        function createDashedWord(wLength){
+        async function createDashedWord(wLength){
             
             for(i=0; i<wLength; i++){
                 if(i-1<wLength){
@@ -111,7 +111,7 @@
             wordSplitted = encoded.split(" ");
         }
 
-        function putLettersCorrectly(pos, wrongNum){
+        async function putLettersCorrectly(pos, wrongNum){
             
             //controls if the letters in input in the list are major or equal than 11
             if(wrongNum >= 11){
@@ -142,13 +142,15 @@
 
         const socket = io.connect('http://127.0.0.1:3000/');
 
+        /**
+         * 
+        */
         function inizia(){
-            wordPos.innerHTML = "ciao";
             socket.emit('start');
         }      
 
         socket.on('giveLength', async (length) => {
-            console.log("same"); 
+            await console.log("same"); 
             wordPos.textContent = await createDashedWord(length);
         })
 
