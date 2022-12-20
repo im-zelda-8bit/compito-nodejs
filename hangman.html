@@ -147,13 +147,13 @@
             socket.emit('start');
         }      
 
-        socket.on('giveLength', (length) => {
+        socket.on('giveLength', async (length) => {
             console.log("same"); 
-            wordPos.textContent = createDashedWord(length);
+            wordPos.textContent = await createDashedWord(length);
         })
 
-        socket.on('isInIsNot', (pos, wrongNum) => {
-            putLettersCorrectly(pos, wrongNum);
+        socket.on('isInIsNot', async(pos, wrongNum) => {
+            await putLettersCorrectly(pos, wrongNum);
         })
 
     </script>

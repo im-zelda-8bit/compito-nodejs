@@ -356,17 +356,17 @@ io.sockets.on('connection', function (socket) {
         console.log(utenti);
     });
     
-    socket.on('start', () => {
+    socket.on('start', async () => {
 
-        let length = selectWord();
+        let length = await selectWord();
         //console.log(length + " dal server");
         socket.emit('giveLength', length);
         
     })  
 
-    socket.on('checkLetter', (letter) => {
+    socket.on('checkLetter', async (letter) => {
         try{
-            let checkReturn = checkLetter(letter);
+            let checkReturn = await checkLetter(letter);
             let pos = checkReturn[0]
             let wrongNum = checkReturn[1]
             socket.emit('isInIsNot', pos, wrongNum);
