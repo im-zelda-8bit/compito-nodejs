@@ -471,7 +471,13 @@ function checkLetter(letter){
             }
     }
 
+<<<<<<< Updated upstream
     return [indexes, lettersWrong.length]
+=======
+    wordSplitted = encoded.split(" ");
+    socket.
+    document.getElementById('word').innerHTML = encoded;
+>>>>>>> Stashed changes
 }
 
 server.listen(3000);
